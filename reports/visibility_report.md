@@ -1,31 +1,19 @@
-# Visibility report
+# Visibility Report
 
-- Thư mục nhãn: `dataset\labels\train`
-- 20 ảnh, 27 skeleton, trung bình 16.0 khớp có v > 0 mỗi người
-- Tổng: v=2 313 | v=1 119 | v=0 27
+## 1. Tóm tắt số lượng cờ
+Dựa trên kết quả chạy script `tools/check_pose_labels.py`:
+- Số lượng file nhãn (train): 20 file
+- Số lượng skeleton (người): 27 skeleton
+- **v=2 (Nhìn rõ):** 313
+- **v=1 (Bị che khuất, nằm trong hình):** 119
+- **v=0 (Ngoài khung hình):** 27
 
-| # | Khớp | v=2 | v=1 | v=0 | %v=1 |
-| ---: | --- | ---: | ---: | ---: | ---: |
-| 0 | nose | 21 | 6 | 0 | 22% |
-| 1 | left_eye | 18 | 9 | 0 | 33% |
-| 2 | right_eye | 19 | 8 | 0 | 30% |
-| 3 | left_ear | 9 | 18 | 0 | 67% |
-| 4 | right_ear | 13 | 14 | 0 | 52% |
-| 5 | left_shoulder | 25 | 2 | 0 | 7% |
-| 6 | right_shoulder | 27 | 0 | 0 | 0% |
-| 7 | left_elbow | 22 | 5 | 0 | 19% |
-| 8 | right_elbow | 23 | 4 | 0 | 15% |
-| 9 | left_wrist | 19 | 8 | 0 | 30% |
-| 10 | right_wrist | 18 | 8 | 1 | 30% |
-| 11 | left_hip | 17 | 9 | 1 | 33% |
-| 12 | right_hip | 19 | 7 | 1 | 26% |
-| 13 | left_knee | 17 | 6 | 4 | 22% |
-| 14 | right_knee | 17 | 6 | 4 | 22% |
-| 15 | left_ankle | 14 | 5 | 8 | 19% |
-| 16 | right_ankle | 15 | 4 | 8 | 15% |
+## 2. Các lỗi/cảnh báo được phát hiện
+- `train_02.txt:1`: `left_shoulder/right_shoulder` nằm ngược chiều so với hai mắt. Dấu hiệu đảo trái/phải.
+- `train_02.txt:1`: `left_hip/right_hip` nằm ngược chiều so với hai mắt.
+- `train_04.txt:1` & `train_04.txt:2`: Có các khớp `v=0` trong khi cả người nằm gọn giữa ảnh. Đáng lẽ phải là `v=1`.
+- `train_10.txt:1` & `train_11.txt:1`: Tương tự, có các khớp `v=0` khi người nằm gọn trong ảnh, cần đổi về `v=1`.
 
-## Đọc bảng này thế nào
-
-1. Khớp nào có **%v=1 cao**: khớp hay bị che. Cổ tay và hông thường là hai vị trí cần xem lại guideline trước khi kết luận.
-2. Khớp nào có **v=0 cao bất thường**: mọi người đang dùng Outside ở chỗ đáng lẽ là Occluded. Đó là lỗi số 3 của slide 46, và nó xoá thẳng khớp đó khỏi bảng điểm OKS.
-3. Khi so hai người: **lệch lớn = bất đồng về guideline**, không phải về bức ảnh. Sửa guideline trước, sửa nhãn sau.
+## 3. Hành động khắc phục
+- Rà soát lại file `train_02.txt`, sửa lại trái/phải đối với vai và hông.
+- Đổi lại `v=0` thành `v=1` ở các khung hình `train_04`, `train_10`, `train_11` tại các vị trí người không bị cắt bởi rìa ảnh nhưng đang bị đánh dấu ngoài khung hình.

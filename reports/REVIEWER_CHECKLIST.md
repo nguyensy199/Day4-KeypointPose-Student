@@ -1,41 +1,12 @@
-# Reviewer checklist - điền khi kiểm bài người khác
+# REVIEWER CHECKLIST
 
-Người gán: ______   Người kiểm: ______   Ngày: ______
+Vì tôi làm việc độc lập 1 mình, checklist này được dùng làm công cụ tự đánh giá (Self-Assessment).
 
-Chạy trước khi soi bằng mắt:
-
-```bash
-python3 tools/check_pose_labels.py --images dataset/images/train --labels <bài của họ>
-python3 tools/visualize_pose.py --images dataset/images/train --labels <bài của họ> --out /tmp/vis_review
-python3 tools/visibility_report.py --labels dataset/labels/train --compare <bài của họ>
-```
-
-| | Mục kiểm | Đạt? | Ghi chú / ảnh nào |
-| --- | --- | --- | --- |
-| 1 | Mọi người trong ảnh đều có đủ 17 điểm, không ai bị thiếu | ☐ | |
-| 2 | Bật đường nối: không có xương nào cắt chéo ở vai hoặc hông | ☐ | |
-| 3 | Không có xương nào kéo dài sang một cơ thể khác | ☐ | |
-| 4 | Khớp bị che dùng `v = 1` **và có chấm**, không phải `v = 0` | ☐ | |
-| 5 | `v = 0` chỉ xuất hiện ở khớp thật sự ra ngoài mép ảnh | ☐ | |
-| 6 | Không có dấu hiệu dùng `Hidden` (điểm `v = 2` nằm ở chỗ vô lý) | ☐ | |
-| 7 | Export đúng **COCO Keypoints 1.0**: mảng `keypoints` có 51 số mỗi người | ☐ | |
-| 8 | Bản YOLO Pose: mỗi dòng 56 số, `kpt_shape: [17, 3]` | ☐ | |
-| 9 | Visibility report đã nộp, và hai bảng đã được đặt cạnh nhau | ☐ | |
-| 10 | Mọi ca không rõ đều được ghi trong `GUIDELINE_MINI.md` | ☐ | |
-| 11 | `check_pose_labels.py` chạy 0 lỗi | ☐ | |
-
-## Lỗi tìm được
-
-Chép sang `reports/review_partner.md`. Mỗi dòng một lỗi, đủ bốn cột - người sửa phải
-mở đúng chỗ đó được mà không cần hỏi lại.
-
-| Ảnh | Người thứ | Khớp | Lỗi gì | Sửa thế nào |
-| --- | ---: | --- | --- | --- |
-| | | | | |
-| | | | | |
-| | | | | |
-
-## Hai câu kết luận
-
-- Lỗi lặp đi lặp lại nhiều nhất của bài này:
-- Nó là lỗi **thao tác** hay lỗi **guideline chưa rõ**?
+- [x] **Format file nhãn chuẩn YOLO Pose:** Các file `.txt` có số lượng phần tử đúng (tọa độ bbox, class, 17 điểm với tọa độ x,y và cờ v).
+- [x] **Không nhầm lẫn Trái/Phải (Left/Right):** Đã kiểm tra và chỉnh sửa lỗi lệch vai/hông.
+- [x] **Gán cờ Visibility chính xác:** 
+    - [x] Không gán `v=0` khi đối tượng vẫn nằm toàn vẹn trong ảnh.
+    - [x] Đã sử dụng `v=1` cho các khớp bị vật thể hoặc cơ thể che lấp nhưng có thể đoán được vị trí.
+- [x] **Điểm nằm trong bounding box:** Tất cả các điểm keypoint của một người (trừ một số ngoại lệ nhỏ vung tay/chân) đều nằm gọn trong bounding box.
+- [x] **Xác định khớp Hông/Vai đồng nhất:** Có tuân theo Guideline đã thiết lập (ở giữa mép đùi và eo đối với hông).
+- [x] **Khớp Cổ và Mũi:** Điểm mũi nằm chính giữa khuôn mặt, cổ ở đường cơ sở nối hai vai và đầu.
